@@ -1,0 +1,26 @@
+{
+  "name": "bonbook",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BonBook CLI — natural-language flight help via BonBook",
+  "type": "module",
+  "bin": {
+    "bonbook": "bin/bonbook.js"
+  },
+  "scripts": {
+    "test": "node --test test/"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "bonbook",
+    "cli"
+  ],
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^12.1.0",
+    "conf": "^13.0.1",
+    "ora": "^8.1.0"
+  }
+}
