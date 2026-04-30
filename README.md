@@ -1,5 +1,11 @@
 # bonbook (CLI)
 
+## What BonBook CLI does
+
+**BonBook CLI** is a **terminal front-end for BonBook**. You describe what you want in **natural language**—search flights, compare options, adjust travel plans, or ask about existing bookings—and BonBook answer's via a remote **HTTPS bridge**. While the backend works, you see status in the terminal; when it finishes, you get a response and, for offers, **itineraries with prices** and shortened **booking links** to open and book in one click.
+
+The CLI stores only your **`cli-key`** locally ( **`bonbook set-key`** ), which is linked to your member profile and saved preferences after you first checkout.
+
 **Repo:** [github.com/aSzelem/bonbook-cli](https://github.com/aSzelem/bonbook-cli)
 
 This package is **not on the npm registry** (`private` in **`package.json`**). Install it **from GitHub** (see below). The **`bin`** name is **`bonbook`**.
@@ -30,7 +36,8 @@ After a **global** install from GitHub:
 
 ```bash
 bonbook set-key '<cli-key>'
-bonbook ask 'flight from seattle to sf tmrw', 'push my flight back 3hrs', 'what gate is my LA flight leave from today?'
+bonbook ask 'flight from seattle to sf tmrw'
+bonbook ask 'push my flight back 3hrs'
 ```
 
 Example session:
@@ -59,5 +66,5 @@ The **`cliKey saved`** line echoes only the **last four characters** of the key.
 - Sends **`POST /v1/ask`**, then polls **`GET /v1/jobs/:correlationId`** every **2s** by default until **`complete`** or **`failed`** (spinner + interim status text from BonBook).
 - Env: **`BONBOOK_POLL_INTERVAL_MS`** (default **`2000`**), **`BONBOOK_POLL_TIMEOUT_MS`** (default **`120000`**).
 - Offer/checkout links in output may already be shortened for readability; open them in a browser to complete purchase flows.
+- Auth: only the **`cli-key`** is stored locally via **`set-key`**; broader BonBook API credentials are **not** in the client.
 
-No BonBook API credentials in the client — only **`cli-key`**, stored locally via **`set-key`**.
