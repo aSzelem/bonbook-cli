@@ -1,6 +1,6 @@
 ---
 name: bonbook-cli
-description: Agent skill — install, configure, and run bonbook-cli (workspace-local by default), then execute travel queries via bonbook ask. Use for BonBook, bonbook-cli, terminal flight search, or booking. Branch on setup state—skip clone/install/set-key when the CLI and cli-key are already present; only run full setup when something is missing or ask fails auth.
+description: Agent skill — install, configure, and run bonbook-cli (workspace-local by default), then execute travel queries via bonbook ask. Use for BonBook, bonbook-cli, terminal flight search, or booking. Branch on setup state—skip clone/install/set-key when the CLI and cli-key are already present; only run full setup when something is missing or ask fails auth. When sharing `ask` output with the user, always pass through every flight/booking or change option BonBook returned (full rows, prices, times, links); introductory prose may be shortened but structured results must stay complete and accurate.
 ---
 
 # BonBook CLI — Agent Skill
@@ -161,9 +161,19 @@ npm run bonbook -- ask 'earliest one-way seattle to san francisco tomorrow nonst
 
 **Latency:** Expect roughly **15–60 seconds** per query while the job polls. Use a generous tool/shell timeout; default **`BONBOOK_POLL_TIMEOUT_MS`** is **120000** and is usually enough.
 
-**Output:** Lines like `< link: https://m.bonbook.co/... >` are booking URLs. Summarize options for the user; when they want to book, open the chosen URL: **macOS** `open 'https://…'`, **Linux** `xdg-open`, **Windows** `start`.
+### Presenting results to the human (mandatory)
 
-Example shape (wording may include a personalized greeting):
+After **`ask`** completes, **share with the user everything BonBook returned** for actionable trips—**do not** collapse results into a partial list, “top picks,” or paraphrase that omits options **unless** the user explicitly asked for a subset (e.g. “only the cheapest”) in that same turn.
+
+- **Flight search / booking options:** Include **every** option the CLI printed: each date group, each itinerary row (times, airports, duration, stops, carrier text), **each price**, and **every** `< link: https://m.bonbook.co/… >` (or equivalent) line. Preserve ordering and wording from the CLI so times, prices, and links stay **exactly** matchable for booking.
+- **Flight changes / schedule / rebooking flows:** Same rule—if BonBook returned multiple change or alternate options, show **all** of them with the same fidelity (times, routing, price deltas if shown, links).
+- **Plain `message`-style answers:** If the output is only narrative (no structured flight table), pass the **full** text; do not shorten in a way that drops constraints, names, or next steps the user must see.
+- **What you may condense:** Optional short intro/outro (e.g. one sentence of context), or a brief recap **in addition to**—not **instead of**—the full CLI body (verbatim or a faithful fenced block that includes every row).
+- **Adding value:** You may add interpretation (“these are all nonstop,” “price spread is …”) **after** the complete listing, or in a preamble, but the human must still see the **entire** result set from BonBook.
+
+**Booking links:** Lines like `< link: https://m.bonbook.co/... >` are booking URLs. When the user wants to book, open the chosen URL: **macOS** `open 'https://…'`, **Linux** `xdg-open`, **Windows** `start`.
+
+Example shape (wording may include a personalized greeting)—if the CLI shows nine rows, the user sees **nine** rows, not a summary of three:
 
 ```
 I checked … options …
@@ -208,3 +218,4 @@ Dates: 2026-05-09
 - **Repo:** `https://github.com/aSzelem/bonbook-cli` (git URL install; not an npm package name on the registry).
 - **Auth:** Local **`cli-key`** only; ties CLI to the same web profile as BonBook checkout.
 - **Primary command:** `ask` with natural language; **`set-key`** once per machine/profile location when missing or rotated.
+- **User-visible results:** Always show **all** flight/booking and change options from the CLI output; you may add brief prose around them but must not omit or merge away rows, prices, or booking links.
