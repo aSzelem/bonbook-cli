@@ -10,6 +10,8 @@ The CLI stores only your **`cli-key`** locally ( **`bonbook set-key`** ), which 
 
 This package is **not on the npm registry** (`private` in **`package.json`**). Install it **from GitHub** (see below). The **`bin`** name is **`bonbook`**.
 
+**Agent skill:** [`bonbook/SKILL.md`](bonbook/SKILL.md) — one AgentSkills-compatible folder in this repo; copy or symlink the `bonbook/` directory into your agent’s skills path (Cursor, Claude Code, OpenClaw destinations are listed in that file).
+
 ## Install from GitHub
 
 **Global `bonbook` command** (recommended once you’re happy with the install):
